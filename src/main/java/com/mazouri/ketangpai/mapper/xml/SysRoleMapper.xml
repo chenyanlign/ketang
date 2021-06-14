@@ -2,4 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mazouri.ketangpai.mapper.SysRoleMapper">
 
+    <select id="selectRoleByEmail" resultType="java.lang.String">
+        SELECT
+            sr.role_name
+        FROM
+            sys_user_role sur
+                LEFT JOIN sys_role sr ON sur.role_id = sr.id
+                LEFT JOIN sys_user su ON sur.user_id = su.id
+        WHERE
+            su.email = #{email}
+    </select>
 </mapper>

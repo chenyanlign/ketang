@@ -40,7 +40,7 @@ public class SysPermission implements Serializable {
     private String path;
 
     @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
-    private Integer status;
+    private Integer isDeleted;
 
     @ApiModelProperty(value = "创建时间")
     private Date createTime;

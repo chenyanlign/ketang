@@ -54,9 +54,12 @@ public class Course implements Serializable {
     @ApiModelProperty(value = "近期作业")
     private String recentWork;
 
-    @ApiModelProperty(value = "0 正常 1 删除 2 归档")
+    @ApiModelProperty(value = "0 正常 1 删除")
     @TableField(fill = FieldFill.INSERT)
-    private Integer status;
+    private Integer isDeleted;
+
+    @ApiModelProperty(value = "0 正常 1 归档")
+    private Integer archived;
 
     @ApiModelProperty(value = "创建时间")
     @TableField(fill = FieldFill.INSERT)

@@ -41,7 +41,7 @@ public class SysUserRole implements Serializable {
 
     @ApiModelProperty(value = "0 正常 1 删除")
     @TableField(fill = FieldFill.INSERT)
-    private Integer status;
+    private Integer isDeleted;
 
     @ApiModelProperty(value = "创建时间")
     @TableField(fill = FieldFill.INSERT)

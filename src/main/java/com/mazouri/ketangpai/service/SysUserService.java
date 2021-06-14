@@ -3,6 +3,8 @@ package com.mazouri.ketangpai.service;
 import com.mazouri.ketangpai.entity.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Map;
+
 /**
  * <p>
  * 用户表 服务类
@@ -13,4 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface SysUserService extends IService<SysUser> {
 
+    SysUser selectByEmail(String email);
+
+    Map<String, Object> getUserInfo(String username);
 }

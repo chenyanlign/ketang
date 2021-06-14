@@ -41,8 +41,9 @@ public class CourseController {
     public R getAllUser(@PathVariable String courseId) {
         return R.ok();
     }
+
     @ApiOperation(value = "获取所有归档课程")
-    @GetMapping("/getAllCourseByUserId/{userId}")
+    @GetMapping("/getAllArchiveCourse/{userId}")
     public R getAllArchiveCourse(@PathVariable String userId) {
         return R.ok();
     }
@@ -55,19 +56,19 @@ public class CourseController {
 
     @ApiOperation(value = "归档课程")
     @PostMapping("/archiveCourse")
-    public R archiveCourse(String  courseId) {
+    public R archiveCourse(@RequestParam String  courseId) {
         return R.ok();
     }
 
     @ApiOperation(value = "恢复归档课程")
-    @PostMapping("/archiveCourse")
-    public R recoverArchiveCourse(String  courseId) {
+    @PostMapping("/recoverArchiveCourse")
+    public R recoverArchiveCourse(@RequestParam String  courseId) {
         return R.ok();
     }
 
     @ApiOperation(value = "删除课程")
-    @DeleteMapping("/delete")
-    public R deleteCourse(String  courseId) {
+    @DeleteMapping("/delete/{courseId}")
+    public R deleteCourse(@PathVariable String  courseId) {
         return R.ok();
     }
 }

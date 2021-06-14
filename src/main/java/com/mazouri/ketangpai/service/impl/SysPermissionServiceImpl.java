@@ -6,6 +6,8 @@ import com.mazouri.ketangpai.service.SysPermissionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 权限 服务实现类
@@ -17,4 +19,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysPermission> implements SysPermissionService {
 
+    @Override
+    public List<String> selectPermissionValueByUserId(String id) {
+        return baseMapper.selectPermissionValueByUserId(id);
+    }
 }
