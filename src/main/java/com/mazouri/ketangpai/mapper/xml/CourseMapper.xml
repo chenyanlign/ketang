@@ -2,4 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mazouri.ketangpai.mapper.CourseMapper">
 
+    <select id="getAllCourseById" resultType="com.mazouri.ketangpai.entity.vo.CourseVO">
+        SELECT
+            course.*,
+            cu.archived,
+            homework.title AS recentWorkTitle,
+            su.username AS createTeacher,
+            su.avatar AS teacherAvatar
+        FROM
+            course
+                LEFT JOIN course_user cu ON cu.course_id = course.id
+                LEFT JOIN homework ON homework.id = course.recent_work
+                LEFT JOIN sys_user su ON su.id = course.create_teacher_id
+        WHERE
+            cu.user_id = #{id}
+    </select>
+    <select id="getCourseByCourseId" resultType="com.mazouri.ketangpai.entity.vo.CourseVO">
+
+        SELECT
+            course.*,
+            cu.archived,
+            su.username AS createTeacher,
+            su.avatar AS teacherAvatar
+        FROM
+            course
+                LEFT JOIN course_user cu ON cu.course_id = course.id
+                LEFT JOIN sys_user su ON su.id = course.create_teacher_id
+        WHERE
+            cu.id = #{courseId}
+    </select>
 </mapper>

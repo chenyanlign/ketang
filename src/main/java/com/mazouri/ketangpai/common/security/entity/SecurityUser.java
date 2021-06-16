@@ -25,7 +25,7 @@ public class SecurityUser implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户名 account
+     * 用户名 email
      */
     private String email;
 

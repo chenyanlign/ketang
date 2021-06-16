@@ -2,4 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mazouri.ketangpai.mapper.SysUserMapper">
 
+    <select id="getAllStudentByCourseId" resultType="com.mazouri.ketangpai.entity.SysUser">
+        SELECT
+            su.*
+        FROM
+            course
+                LEFT JOIN course_user cu ON cu.course_id = course.id
+                AND cu.user_type = 3
+                LEFT JOIN sys_user su ON su.id = cu.user_id
+        WHERE
+            course.id = #{courseId}
+    </select>
+    <select id="getAllTeacherByCourseId" resultType="com.mazouri.ketangpai.entity.SysUser">
+        SELECT
+            su.*
+        FROM
+            course
+                LEFT JOIN course_user cu ON cu.course_id = course.id
+                AND ( cu.user_type = 1 OR cu.user_type = 2 )
+                LEFT JOIN sys_user su ON su.id = cu.user_id
+        WHERE
+            course.id = #{courseId}
+    </select>
 </mapper>

@@ -3,6 +3,8 @@ package com.mazouri.ketangpai.mapper;
 import com.mazouri.ketangpai.entity.SysUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户表 Mapper 接口
@@ -13,4 +15,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
+    List<SysUser> getAllStudentByCourseId(String courseId);
+
+    List<SysUser> getAllTeacherByCourseId(String courseId);
 }

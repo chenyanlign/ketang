@@ -5,5 +5,5 @@ package com.mazouri.ketangpai.common.constant;
  * @create 2021-06-14 10:57
  */
 public interface ConstantValue {
-    String FILE_PATH = "D:\\ketangpai\\file";
+    String FILE_PATH = "D:\\ketangpai\\file\\";
 }

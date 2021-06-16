@@ -51,7 +51,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         List<String> roleList = roleService.selectRoleByEmail(user.getEmail());
 
         //根据用户id获取操作权限值
-        System.out.println("------------------------permissionValueList---");
         List<String> permissionValueList = permissionService.selectPermissionValueByUserId(user.getId());
         System.out.println(permissionValueList);
 
@@ -62,4 +61,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         result.put("permissionValueList", permissionValueList);
         return result;
     }
+
+    @Override
+    public List<SysUser> getAllStudentByCourseId(String courseId) {
+        return baseMapper.getAllStudentByCourseId(courseId);
+    }
+
+    @Override
+    public List<SysUser> getAllTeacherByCourseId(String courseId) {
+        return baseMapper.getAllTeacherByCourseId(courseId);
+    }
+
+
 }

@@ -1,15 +1,29 @@
 package com.mazouri.ketangpai.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mazouri.ketangpai.common.result.R;
-import com.mazouri.ketangpai.entity.Course;
+import com.mazouri.ketangpai.common.utils.GenerateCourseCode;
 import com.mazouri.ketangpai.entity.CourseUser;
+import com.mazouri.ketangpai.entity.Course;
+import com.mazouri.ketangpai.entity.SysUser;
+import com.mazouri.ketangpai.entity.vo.CourseVO;
+import com.mazouri.ketangpai.service.CourseService;
+import com.mazouri.ketangpai.service.CourseUserService;
+import com.mazouri.ketangpai.service.SysUserService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author mazouri
@@ -18,28 +32,52 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/ketangpai/course")
 public class CourseController {
+    @Autowired
+    private SysUserService userService;
+
+    @Autowired
+    private CourseService courseService;
+
+    @Autowired
+    private CourseUserService courseUserService;
+
     @ApiOperation(value = "获取登录用户的所有的课程")
     @GetMapping("/getAllCourseByUserId/{userId}")
     public R getAllCourseByUserId(@PathVariable String userId) {
-        return R.ok();
+        List<CourseVO> courseList = courseService.getAllCourseById(userId);
+        return R.ok().data("course", courseList);
     }
 
     @ApiOperation(value = "根据加课码加入课程")
     @PostMapping("/joinCourse")
-    public R joinCourse(@RequestBody CourseUser courseUser ) {
-        return R.ok();
+    public R joinCourse(@RequestParam String code, @RequestParam String userId) {
+        Course course = courseService.getOne(new QueryWrapper<Course>().eq("code", code));
+        CourseUser courseUser = new CourseUser();
+        courseUser.setUserType(3).setCourseId(course.getId()).setUserId(userId);
+        return courseUserService.save(courseUser) ? R.ok() : R.error();
     }
 
     @ApiOperation(value = "根据id获取课程")
     @GetMapping("/getCourseById/{courseId}")
     public R getCourseById(@PathVariable String courseId) {
-        return R.ok();
+        CourseVO course = courseService.getCourseByCourseId(courseId);
+        int courseNum = courseUserService.list(new QueryWrapper<CourseUser>().eq("course_id", courseId)).size();
+        course.setCourseNum(courseNum);
+        return R.ok().data("course", course);
     }
 
-    @ApiOperation(value = "根据id获取课程")
-    @GetMapping("/getAllUser/{courseId}")
-    public R getAllUser(@PathVariable String courseId) {
-        return R.ok();
+    @ApiOperation(value = "获取该课程的所有学生")
+    @GetMapping("/getAllStudent/{courseId}")
+    public R getAllStudent(@PathVariable String courseId) {
+        List<SysUser> studentList = userService.getAllStudentByCourseId(courseId);
+        return R.ok().data("studentList", studentList);
+    }
+
+    @ApiOperation(value = "获取该课程的所有学生")
+    @GetMapping("/getAllTeacher/{courseId}")
+    public R getAllTeacher(@PathVariable String courseId) {
+        List<SysUser> teacherList = userService.getAllTeacherByCourseId(courseId);
+        return R.ok().data("teacherList", teacherList);
     }
 
     @ApiOperation(value = "获取所有归档课程")
@@ -48,28 +86,34 @@ public class CourseController {
         return R.ok();
     }
 
-    @ApiOperation(value = "获取所有归档课程")
-    @GetMapping("/createCourse")
+    @ApiOperation(value = "教师创建课程")
+    @PostMapping("/createCourse")
     public R createCourse(@RequestBody Course course) {
-        return R.ok();
+        List<String> codes = courseService.list().stream().map(Course::getCode).collect(Collectors.toList());
+        //设置选课码 唯一
+        course.setCode(GenerateCourseCode.getCode(codes));
+        return courseService.save(course) ? R.ok() : R.error();
     }
 
     @ApiOperation(value = "归档课程")
     @PostMapping("/archiveCourse")
-    public R archiveCourse(@RequestParam String  courseId) {
-        return R.ok();
+    public R archiveCourse(@RequestParam String courseId, @RequestParam String userId) {
+        CourseUser courseUser = courseUserService.getOne(new QueryWrapper<CourseUser>().eq("course_id", courseId).eq("user_id", userId));
+        return courseUserService.updateById(courseUser.setArchived(1)) ? R.ok() : R.error();
     }
 
     @ApiOperation(value = "恢复归档课程")
     @PostMapping("/recoverArchiveCourse")
-    public R recoverArchiveCourse(@RequestParam String  courseId) {
-        return R.ok();
+    public R recoverArchiveCourse(@RequestParam String courseId, @RequestParam String userId) {
+        CourseUser courseUser = courseUserService.getOne(new QueryWrapper<CourseUser>().eq("course_id", courseId).eq("user_id", userId));
+        return courseUserService.updateById(courseUser.setArchived(0)) ? R.ok() : R.error();
     }
 
-    @ApiOperation(value = "删除课程")
-    @DeleteMapping("/delete/{courseId}")
-    public R deleteCourse(@PathVariable String  courseId) {
-        return R.ok();
+    @ApiOperation(value = "退课")
+    @PostMapping("/delete")
+    public R deleteCourse(@RequestParam String courseId, @RequestParam String userId) {
+        CourseUser courseUser = courseUserService.getOne(new QueryWrapper<CourseUser>().eq("course_id", courseId).eq("user_id", userId));
+        return courseUserService.removeById(courseUser.getId()) ? R.ok() : R.error();
     }
 }
 

@@ -1,14 +1,21 @@
 package com.mazouri.ketangpai.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mazouri.ketangpai.common.result.R;
+import com.mazouri.ketangpai.entity.Homework;
 import com.mazouri.ketangpai.entity.SubmitHomework;
+import com.mazouri.ketangpai.service.HomeworkService;
+import com.mazouri.ketangpai.service.SubmitHomeworkService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author mazouri
@@ -17,22 +24,53 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/ketangpai/homework")
 public class HomeworkController {
+    @Autowired
+    private HomeworkService homeworkService;
+
+    @Autowired
+    private SubmitHomeworkService submitHomeworkService;
 
     @ApiOperation(value = "提交作业")
     @PostMapping("/submitHomework")
     public R submitHomework(@RequestBody SubmitHomework homework) {
-        return R.ok();
+        SubmitHomework submitWork = submitHomeworkService.getOne(new QueryWrapper<SubmitHomework>()
+                .eq("user_id", homework.getUserId()).eq("homework_id", homework.getHomeworkId()));
+
+        if (submitWork!=null){
+            submitHomeworkService.updateById(submitWork);
+        }else {
+            submitHomeworkService.save(homework);
+        }
+
+        return R.ok().data("submitWork",submitHomeworkService.getById(submitWork.getId()));
+//        System.out.println(homework);
+//        if(submitHomeworkService.save(homework)){
+//            SubmitHomework submitWork = submitHomeworkService.getOne(new QueryWrapper<SubmitHomework>()
+//                    .eq("user_id", homework.getUserId()).eq("homework_id", homework.getHomeworkId()));
+//            return R.ok().data("submitWork",submitWork);
+//        }else {
+//            return R.error();
+//        }
+    }
+
+    @ApiOperation(value = "根据课程号和人员id获取交的作业")
+    @GetMapping("/getSubmitHomework")
+    public R getSubmitHomework(@RequestParam String homeworkId, @RequestParam String userId) {
+        SubmitHomework submitHomeWork = submitHomeworkService.getOne(new QueryWrapper<SubmitHomework>().eq("homework_id", homeworkId).eq("user_id", userId));
+        return (submitHomeWork !=null) ? R.ok().data("submitHomework",submitHomeWork) : R.error();
+
     }
 
     @ApiOperation(value = "根据课程号获取作业")
-    @GetMapping("/getByCourseId/{courseId}")
+    @GetMapping("/getHomeworksByCourseId/{courseId}")
     public R getHomeworkByCourseId(@PathVariable String courseId) {
-        return R.ok();
+        List<Homework> homeworkList = homeworkService.list(new QueryWrapper<Homework>().eq("course_id", courseId));
+        return R.ok().data("homework",homeworkList);
     }
 
     @ApiOperation(value = "根据id获取homework打分")
-    @PostMapping("/mark/{submitHomeworkId}")
-    public R mark(@PathVariable String submitHomeworkId,@RequestBody double grade) {
+    @PostMapping("/mark")
+    public R mark(@RequestParam String submitHomeworkId, @RequestParam double grade) {
         return R.ok();
     }
 
@@ -59,5 +97,7 @@ public class HomeworkController {
     public R getNeedSubmitStudents() {
         return R.ok();
     }
+
+
 }
 
