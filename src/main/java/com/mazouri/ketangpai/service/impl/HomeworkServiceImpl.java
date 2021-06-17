@@ -16,5 +16,4 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> implements HomeworkService {
-
 }

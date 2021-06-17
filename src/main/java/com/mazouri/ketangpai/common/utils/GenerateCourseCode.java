@@ -34,7 +34,7 @@ public class GenerateCourseCode {
                     s.append(random.nextInt(10));
                 }
             }
-            s = new StringBuilder(s.toString().toLowerCase());
+            s = new StringBuilder(s.toString().toUpperCase());
             if (!code.contains(s.toString())) {
                 return s.toString();
             }
