@@ -2,6 +2,9 @@ package com.mazouri.ketangpai.mapper;
 
 import com.mazouri.ketangpai.entity.SubmitHomework;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface SubmitHomeworkMapper extends BaseMapper<SubmitHomework> {
 
+    List<SubmitHomework> getSubmitHomeworkList(@Param("courseId") String courseId,@Param("userId") String userId);
 }

@@ -44,11 +44,11 @@ public class HomeworkController {
 
         if (submitWork != null) {
             submitHomeworkService.updateById(submitWork);
+            return R.ok().data("submitWork",submitHomeworkService.getById(submitWork.getId()));
         } else {
             submitHomeworkService.save(homework);
+            return R.ok().data("submitWork",submitHomeworkService.getById(homework.getId()));
         }
-
-        return R.ok().data("submitWork", submitHomeworkService.getById(submitWork.getId()));
     }
 
     @ApiOperation(value = "老师创建作业")
@@ -70,8 +70,14 @@ public class HomeworkController {
     @GetMapping("/getSubmitHomework")
     public R getSubmitHomework(@RequestParam String homeworkId, @RequestParam String userId) {
         SubmitHomework submitHomeWork = submitHomeworkService.getOne(new QueryWrapper<SubmitHomework>().eq("homework_id", homeworkId).eq("user_id", userId));
-        return  R.ok().data("submitHomework", submitHomeWork);
+        return R.ok().data("submitHomework", submitHomeWork) ;
+    }
 
+    @ApiOperation(value = "根据课程号和用户id获取交的所有作业")
+    @GetMapping("/getSubmitHomeworkList")
+    public R getSubmitHomeworkList(@RequestParam String courseId, @RequestParam String userId) {
+       List<SubmitHomework> submitHomeworkList =  submitHomeworkService.getSubmitHomeworkList(courseId,userId);
+        return R.ok().data("submitHomeworkList",submitHomeworkList);
     }
 
     @ApiOperation(value = "根据课程号获取作业")

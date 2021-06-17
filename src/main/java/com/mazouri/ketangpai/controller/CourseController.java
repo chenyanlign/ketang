@@ -39,7 +39,7 @@ public class CourseController {
     @Autowired
     private CourseUserService courseUserService;
 
-    @ApiOperation(value = "获取登录用户的所有的课程")
+    @ApiOperation(value = "获取登录用户的所有的课程,包括归档")
     @GetMapping("/getAllCourseByUserId/{userId}")
     public R getAllCourseByUserId(@PathVariable String userId) {
         List<CourseVO> courseList = courseService.getAllCourseById(userId);

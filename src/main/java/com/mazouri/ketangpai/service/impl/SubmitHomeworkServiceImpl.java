@@ -6,6 +6,8 @@ import com.mazouri.ketangpai.service.SubmitHomeworkService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务实现类
@@ -17,4 +19,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SubmitHomeworkServiceImpl extends ServiceImpl<SubmitHomeworkMapper, SubmitHomework> implements SubmitHomeworkService {
 
+    @Override
+    public List<SubmitHomework> getSubmitHomeworkList(String courseId, String userId) {
+        return baseMapper.getSubmitHomeworkList(courseId,userId);
+    }
 }

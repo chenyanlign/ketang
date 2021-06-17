@@ -3,6 +3,8 @@ package com.mazouri.ketangpai.service;
 import com.mazouri.ketangpai.entity.SubmitHomework;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface SubmitHomeworkService extends IService<SubmitHomework> {
 
+    List<SubmitHomework> getSubmitHomeworkList(String courseId, String userId);
 }
