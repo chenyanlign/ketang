@@ -1,6 +1,5 @@
 package com.mazouri.ketangpai.controller;
 
-import com.mazouri.ketangpai.common.constant.ConstantValue;
 import com.mazouri.ketangpai.common.result.R;
 import com.mazouri.ketangpai.common.utils.UUIDUtils;
 import com.mazouri.ketangpai.entity.SubmitHomework;
@@ -13,9 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 import static com.mazouri.ketangpai.common.constant.ConstantValue.FILE_PATH;
 
@@ -28,35 +31,35 @@ import static com.mazouri.ketangpai.common.constant.ConstantValue.FILE_PATH;
 public class UploadController {
     @Autowired
     private SubmitHomeworkService submitHomeworkService;
+    SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/");
 
     @RequestMapping("/upload/{id}")
-    public R uploadFile(@RequestParam("file") MultipartFile multipartFile, @PathVariable String id) throws IOException {
-        File fileDir = new File(FILE_PATH);
-        if (!fileDir.exists() && !fileDir.isDirectory()) {
+    public R uploadFile(@RequestParam("file") MultipartFile multipartFile, @PathVariable String id, HttpServletRequest req) throws IOException {
+        String format = sdf.format(new Date());
+        String realPath = req.getServletContext().getRealPath("/")+"/store"+format;
+        System.out.println(realPath);
+        File fileDir = new File(realPath);
+        if (!fileDir.exists()) {
             fileDir.mkdirs();
         }
         if (multipartFile != null) {
             //以原来的名称命名,覆盖掉旧的，这里也可以使用UUID之类的方式命名，这里就没有处理了
-            String storagePath = FILE_PATH + UUIDUtils.getUUID() + multipartFile.getOriginalFilename();
-            System.out.println("上传的文件：" + multipartFile.getName() + "," + multipartFile.getContentType() + "," + multipartFile.getOriginalFilename()
-                    + "，保存的路径为：" + storagePath);
-            // 3种方法： 第1种
-//                        Streams.copy(multipartFiles[i].getInputStream(), new FileOutputStream(storagePath), true);
-            // 第2种
-//                        Path path = Paths.get(storagePath);
-//                        Files.write(path,multipartFiles[i].getBytes());
-            // 第3种
-            multipartFile.transferTo(new File(storagePath));
+            String fileName =  UUIDUtils.getUUID() + multipartFile.getOriginalFilename();
+            String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()+"/store"+format + fileName;
+            multipartFile.transferTo(new File(fileDir,fileName));
             SubmitHomework submitHomework = submitHomeworkService.getById(id);
-            submitHomework.setFilePath(storagePath);
+            submitHomework.setFilePath(url);
             submitHomework.setFileName(multipartFile.getOriginalFilename());
             submitHomeworkService.updateById(submitHomework);
+
+            System.out.println("上传的文件：" + multipartFile.getName() + "," + multipartFile.getContentType() + "," + multipartFile.getOriginalFilename()
+                    + "，保存的路径为：" + url);
+
             //前端可以通过状态码，判断文件是否上传成功
-            return R.ok().data("path", storagePath);
+            return R.ok().data("path", url);
         }else {
             return R.ok().message("请选中文件");
         }
-
     }
 
 

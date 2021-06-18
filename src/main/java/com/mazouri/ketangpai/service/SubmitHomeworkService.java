@@ -16,4 +16,7 @@ import java.util.List;
 public interface SubmitHomeworkService extends IService<SubmitHomework> {
 
     List<SubmitHomework> getSubmitHomeworkList(String courseId, String userId);
+    Integer getHomeworkSubmitNum(String homeworkId);
+    Integer getHomeworkCheckNum(String homeworkId);
+
 }

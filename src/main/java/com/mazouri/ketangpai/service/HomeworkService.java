@@ -2,6 +2,9 @@ package com.mazouri.ketangpai.service;
 
 import com.mazouri.ketangpai.entity.Homework;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mazouri.ketangpai.entity.vo.HomeworkVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,4 +15,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2021-06-13
  */
 public interface HomeworkService extends IService<Homework> {
+
+    List<HomeworkVO> getAllHomeworkByHwId(String homeworkId);
+
+    List<Homework> getHomeworkListByCourseId(String courseId);
 }

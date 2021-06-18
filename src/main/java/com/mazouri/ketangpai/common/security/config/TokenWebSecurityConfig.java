@@ -81,7 +81,7 @@ public class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 return o;
             }
         })
-                .and().logout().logoutUrl("/admin/user/logout")
+                .and().logout().logoutUrl("/user/logout")
                 .addLogoutHandler(new TokenLogoutHandler(tokenManager, redisTemplate))
                 .and()
                 .addFilter(new TokenLoginFilter(authenticationManager(), tokenManager, redisTemplate))
@@ -107,7 +107,7 @@ public class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/**/course/**","/error","/**/homework/**","/file/**",
+        web.ignoring().antMatchers("/**/course/**","/error","/favicon.ico","/store/**","/admin/**","/**/homework/**","/file/**",
                 "/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**"
         );
     }

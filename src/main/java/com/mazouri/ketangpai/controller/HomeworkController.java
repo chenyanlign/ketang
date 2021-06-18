@@ -7,7 +7,9 @@ import com.mazouri.ketangpai.common.result.R;
 import com.mazouri.ketangpai.entity.Course;
 import com.mazouri.ketangpai.entity.Homework;
 import com.mazouri.ketangpai.entity.SubmitHomework;
+import com.mazouri.ketangpai.entity.vo.HomeworkVO;
 import com.mazouri.ketangpai.service.CourseService;
+import com.mazouri.ketangpai.service.CourseUserService;
 import com.mazouri.ketangpai.service.HomeworkService;
 import com.mazouri.ketangpai.service.SubmitHomeworkService;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +36,9 @@ public class HomeworkController {
     private CourseService courseService;
 
     @Autowired
+    private CourseUserService courseUserService;
+
+    @Autowired
     private SubmitHomeworkService submitHomeworkService;
 
     @ApiOperation(value = "提交作业")
@@ -46,6 +51,7 @@ public class HomeworkController {
             submitHomeworkService.updateById(submitWork);
             return R.ok().data("submitWork",submitHomeworkService.getById(submitWork.getId()));
         } else {
+            homework.setGrade("未批");
             submitHomeworkService.save(homework);
             return R.ok().data("submitWork",submitHomeworkService.getById(homework.getId()));
         }
@@ -54,13 +60,15 @@ public class HomeworkController {
     @ApiOperation(value = "老师创建作业")
     @PostMapping("/createHomework")
     public R createHomework(@RequestBody Homework homework) {
+        homework.setCheckNum(0).setNoCheckNum(0)
+                .setNoSubmitNum(courseUserService.getHomeworkNum(homework.getCourseId()));
         homeworkService.save(homework);
         courseService.update(new UpdateWrapper<Course>().eq("id", homework.getCourseId())
                 .set("recent_work", homework.getId()));
         return R.ok();
     }
 
-    @ApiOperation(value = "老师创建作业")
+    @ApiOperation(value = "老师删除作业")
     @PostMapping("/removeHomework")
     public R removeHomework(@RequestParam String homeworkId) {
         return homeworkService.removeById(homeworkId) ? R.ok() : R.error();
@@ -83,7 +91,7 @@ public class HomeworkController {
     @ApiOperation(value = "根据课程号获取作业")
     @GetMapping("/getHomeworksByCourseId/{courseId}")
     public R getHomeworkByCourseId(@PathVariable String courseId) {
-        List<Homework> homeworkList = homeworkService.list(new QueryWrapper<Homework>().eq("course_id", courseId));
+        List<Homework> homeworkList =homeworkService.getHomeworkListByCourseId(courseId);
         return R.ok().data("homeworks", homeworkList);
     }
 
@@ -94,9 +102,24 @@ public class HomeworkController {
         return R.ok().data("homework", homework);
     }
 
+    @ApiOperation(value = "根据作业id获取所有学生的作业")
+    @GetMapping("/getAllSubmitHomeworkByHwId/{homeworkId}")
+    public R getAllSubmitHomeworkByHwId(@PathVariable String homeworkId) {
+        List<HomeworkVO> homeworkVOList = homeworkService.getAllHomeworkByHwId(homeworkId);
+        return R.ok().data("homeworkList",homeworkVOList);
+    }
+
     @ApiOperation(value = "根据id获取homework打分")
     @PostMapping("/mark")
-    public R mark(@RequestParam String submitHomeworkId, @RequestParam double grade) {
+    public R mark(@RequestParam String submitHomeworkId, @RequestParam String grade) {
+        submitHomeworkService.updateById(new SubmitHomework().setId(submitHomeworkId).setGrade(grade).setChecked(1));
+        return R.ok();
+    }
+
+    @ApiOperation(value = "打回作业")
+    @PostMapping("/backHomework/{submitHomeworkId}")
+    public R backHomework(@PathVariable String submitHomeworkId) {
+        submitHomeworkService.updateById(new SubmitHomework().setId(submitHomeworkId).setGrade("被打回"));
         return R.ok();
     }
 

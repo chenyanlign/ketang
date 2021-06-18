@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,7 +69,8 @@ public class CourseController {
     @ApiOperation(value = "获取该课程的所有学生")
     @GetMapping("/getAllStudent/{courseId}")
     public R getAllStudent(@PathVariable String courseId) {
-        List<SysUser> studentList = userService.getAllStudentByCourseId(courseId);
+        List<SysUser> studentList = userService.getAllStudentByCourseId(courseId).stream()
+                .sorted(Comparator.comparing(SysUser::getAccount)).collect(Collectors.toList());
         return R.ok().data("studentList", studentList);
     }
 

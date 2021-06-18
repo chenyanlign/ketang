@@ -36,7 +36,7 @@ public class SubmitHomework implements Serializable {
     private String userId;
 
     @ApiModelProperty(value = "分数")
-    private Integer grade;
+    private String grade;
 
     @ApiModelProperty(value = "作业路径")
     private String filePath;

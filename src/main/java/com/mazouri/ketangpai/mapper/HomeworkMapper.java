@@ -2,6 +2,9 @@ package com.mazouri.ketangpai.mapper;
 
 import com.mazouri.ketangpai.entity.Homework;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.mazouri.ketangpai.entity.vo.HomeworkVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +15,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2021-06-13
  */
 public interface HomeworkMapper extends BaseMapper<Homework> {
-
+    List<HomeworkVO> getAllUserWork(String homeworkId);
 }

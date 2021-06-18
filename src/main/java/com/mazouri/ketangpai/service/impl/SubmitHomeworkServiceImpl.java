@@ -1,5 +1,7 @@
 package com.mazouri.ketangpai.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.mazouri.ketangpai.entity.Homework;
 import com.mazouri.ketangpai.entity.SubmitHomework;
 import com.mazouri.ketangpai.mapper.SubmitHomeworkMapper;
 import com.mazouri.ketangpai.service.SubmitHomeworkService;
@@ -22,5 +24,15 @@ public class SubmitHomeworkServiceImpl extends ServiceImpl<SubmitHomeworkMapper,
     @Override
     public List<SubmitHomework> getSubmitHomeworkList(String courseId, String userId) {
         return baseMapper.getSubmitHomeworkList(courseId,userId);
+    }
+
+    @Override
+    public Integer getHomeworkSubmitNum(String homeworkId) {
+        return baseMapper.selectCount(new QueryWrapper<SubmitHomework>().eq("homework_id", homeworkId));
+    }
+
+    @Override
+    public Integer getHomeworkCheckNum(String homeworkId) {
+        return baseMapper.selectCount(new QueryWrapper<SubmitHomework>().eq("homework_id", homeworkId).eq("checked", "1"));
     }
 }
