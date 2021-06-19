@@ -51,6 +51,9 @@ public class Document implements Serializable {
     @TableLogic
     private Integer isDeleted;
 
+    @ApiModelProperty(value = "文件类型")
+    private String fileType;
+
     @ApiModelProperty(value = "上传时间")
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
