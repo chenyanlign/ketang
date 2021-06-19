@@ -11,5 +11,6 @@
                 LEFT JOIN sys_user su ON su.id = cn.user_id
         WHERE
             cn.notice_id =#{noticeId}
+          AND cn.is_deleted = 0
     </select>
 </mapper>

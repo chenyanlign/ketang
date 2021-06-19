@@ -15,7 +15,7 @@
                 LEFT JOIN homework ON homework.id = course.recent_work
                 LEFT JOIN sys_user su ON su.id = course.create_teacher_id
         WHERE
-            cu.user_id = #{id} AND course.is_deleted = 0
+            cu.user_id = #{id} AND course.is_deleted = 0 AND cu.is_deleted = 0
     </select>
     <select id="getCourseByCourseId" resultType="com.mazouri.ketangpai.entity.vo.CourseVO">
 
@@ -29,6 +29,6 @@
                 LEFT JOIN course_user cu ON cu.course_id = course.id
                 LEFT JOIN sys_user su ON su.id = course.create_teacher_id
         WHERE
-            course.id = #{courseId} AND course.is_deleted = 0
+            course.id = #{courseId} AND course.is_deleted = 0 AND cu.is_deleted = 0
     </select>
 </mapper>
