@@ -17,13 +17,13 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author mazouri
- * @since 2021-06-13
+ * @since 2021-06-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="Course对象", description="")
-public class Course implements Serializable {
+@ApiModel(value="Document对象", description="")
+public class Document implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,38 +31,27 @@ public class Course implements Serializable {
     @TableId(value = "id", type = IdType.ID_WORKER_STR)
     private String id;
 
-    @ApiModelProperty(value = "课程名称")
-    private String courseName;
+    @ApiModelProperty(value = "课程id")
+    private String courseId;
 
-    @ApiModelProperty(value = "加课码")
-    private String code;
+    @ApiModelProperty(value = "创建者id")
+    private String userId;
 
-    @ApiModelProperty(value = "学年(2020-2021)")
-    private String semester;
+    @ApiModelProperty(value = "文件名称")
+    private String fileName;
 
-    @ApiModelProperty(value = "创建老师")
-    private String createTeacherId;
+    @ApiModelProperty(value = "文件大小")
+    private String fileSize;
 
-    @ApiModelProperty(value = "背景图")
-    private String background;
-
-    @ApiModelProperty(value = "学期（1或2）")
-    private String term;
-
-    @ApiModelProperty(value = "课堂")
-    private String classname;
-
-    @ApiModelProperty(value = "近期作业")
-    private String recentWork;
+    @ApiModelProperty(value = "文件下载路径")
+    private String filePath;
 
     @ApiModelProperty(value = "0 正常 1 删除")
     @TableField(fill = FieldFill.INSERT)
     @TableLogic
     private Integer isDeleted;
 
-
-
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "上传时间")
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 

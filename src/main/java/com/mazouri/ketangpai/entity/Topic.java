@@ -17,13 +17,13 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author mazouri
- * @since 2021-06-13
+ * @since 2021-06-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="Course对象", description="")
-public class Course implements Serializable {
+@ApiModel(value="Topic对象", description="")
+public class Topic implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,36 +31,37 @@ public class Course implements Serializable {
     @TableId(value = "id", type = IdType.ID_WORKER_STR)
     private String id;
 
-    @ApiModelProperty(value = "课程名称")
-    private String courseName;
+    @ApiModelProperty(value = "课程id")
+    private String courseId;
 
-    @ApiModelProperty(value = "加课码")
-    private String code;
+    @ApiModelProperty(value = "话题名称")
+    private String talkTitle;
 
-    @ApiModelProperty(value = "学年(2020-2021)")
-    private String semester;
+    @ApiModelProperty(value = "讨论内容")
+    private String content;
 
-    @ApiModelProperty(value = "创建老师")
-    private String createTeacherId;
+    @ApiModelProperty(value = "创建者的id")
+    private String userId;
 
-    @ApiModelProperty(value = "背景图")
-    private String background;
+    @ApiModelProperty(value = "创建者的id")
+    private String username;
 
-    @ApiModelProperty(value = "学期（1或2）")
-    private String term;
+    @ApiModelProperty(value = "是否置顶 0 否 1 置顶")
+    @TableField(fill = FieldFill.INSERT)
+    private Integer isTop;
 
-    @ApiModelProperty(value = "课堂")
-    private String classname;
+    @ApiModelProperty(value = "是否为精华 0 否 1 是")
+    @TableField(fill = FieldFill.INSERT)
+    private Integer isEssence;
 
-    @ApiModelProperty(value = "近期作业")
-    private String recentWork;
-
-    @ApiModelProperty(value = "0 正常 1 删除")
+    @ApiModelProperty(value = "是否已删除 0 没有 1 删除")
     @TableField(fill = FieldFill.INSERT)
     @TableLogic
     private Integer isDeleted;
 
-
+    @ApiModelProperty(value = "点赞数")
+    @TableField(fill = FieldFill.INSERT)
+    private Integer likeNum;
 
     @ApiModelProperty(value = "创建时间")
     @TableField(fill = FieldFill.INSERT)

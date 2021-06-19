@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mazouri.ketangpai.mapper.CommentMapper">
+
+    <select id="getCommentsByTopicId" resultType="com.mazouri.ketangpai.entity.vo.CommentVO">
+        SELECT
+            c.*,
+            su.username,
+            su.avatar
+        FROM
+            `comment` c
+                LEFT JOIN sys_user su ON c.user_id = su.id
+        WHERE
+            c.topic_id = #{topicId}
+          AND c.is_deleted = 0
+    </select>
+</mapper>

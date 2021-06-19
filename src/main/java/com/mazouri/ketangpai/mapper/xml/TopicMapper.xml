@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mazouri.ketangpai.mapper.TopicMapper">
+
+    <select id="getAllTopic" resultType="com.mazouri.ketangpai.entity.vo.TopicVO">
+        SELECT
+            t.*,
+            su.username
+        FROM
+            topic t
+                LEFT JOIN sys_user su ON su.id = t.user_id
+        WHERE
+            t.course_id = #{courseId} AND t.is_deleted = 0
+    </select>
+    <select id="getTopicById" resultType="com.mazouri.ketangpai.entity.vo.TopicVO">
+        SELECT
+            t.*,
+            su.username
+        FROM
+            topic t
+                LEFT JOIN sys_user su ON su.id = t.user_id
+        WHERE
+            t.id = #{id} AND t.is_deleted = 0
+    </select>
+</mapper>
