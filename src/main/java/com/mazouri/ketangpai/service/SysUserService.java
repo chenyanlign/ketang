@@ -23,4 +23,6 @@ public interface SysUserService extends IService<SysUser> {
     List<SysUser> getAllStudentByCourseId(String courseId);
 
     List<SysUser> getAllTeacherByCourseId(String courseId);
+
+    List<SysUser> getReadNoticeUser(String noticeId);
 }

@@ -1,11 +1,9 @@
 package com.mazouri.ketangpai.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mazouri.ketangpai.common.result.R;
 import com.mazouri.ketangpai.entity.Topic;
 import com.mazouri.ketangpai.entity.vo.TopicVO;
-import com.mazouri.ketangpai.service.SysUserService;
 import com.mazouri.ketangpai.service.TopicService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +51,7 @@ public class TopicController {
         return topicService.removeById(topicId) ? R.ok() : R.error();
     }
 
-    @ApiOperation(value = "创建话题")
+    @ApiOperation(value = "更新话题")
     @PostMapping("/updateTopOrEssence")
     public R updateTopic(@RequestParam String topicId, @RequestParam String type) {
         return topicService.updateTopOrEssence(topicId, type) ? R.ok() : R.error();

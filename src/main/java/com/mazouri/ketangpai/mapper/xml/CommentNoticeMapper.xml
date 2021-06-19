@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mazouri.ketangpai.mapper.CommentNoticeMapper">
+
+    <select id="getCommentByNoticeId" resultType="com.mazouri.ketangpai.entity.vo.CommentNoticeVO">
+        SELECT
+            cn.*,
+            su.username
+        FROM
+            comment_notice cn
+                LEFT JOIN sys_user su ON su.id = cn.user_id
+        WHERE
+            cn.notice_id =#{noticeId}
+    </select>
+</mapper>

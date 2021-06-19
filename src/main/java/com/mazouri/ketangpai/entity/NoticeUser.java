@@ -22,31 +22,20 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="Notice对象", description="")
-public class Notice implements Serializable {
+@ApiModel(value="NoticeUser对象", description="")
+public class NoticeUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键id")
+    @ApiModelProperty(value = "主键")
     @TableId(value = "id", type = IdType.ID_WORKER_STR)
     private String id;
 
-    @ApiModelProperty(value = "标题")
-    private String title;
-
-    @ApiModelProperty(value = "内容")
-    private String content;
-
-    @ApiModelProperty(value = "是否置顶")
-    @TableField(fill = FieldFill.INSERT)
-    private Integer isTop;
-
-    @ApiModelProperty(value = "发布者id")
+    @ApiModelProperty(value = "用户id")
     private String userId;
 
-
-    @ApiModelProperty(value = "课程id")
-    private String courseId;
+    @ApiModelProperty(value = "通知id")
+    private String noticeId;
 
     @ApiModelProperty(value = "0 正常 1 删除")
     @TableField(fill = FieldFill.INSERT)
@@ -54,10 +43,10 @@ public class Notice implements Serializable {
     private Integer isDeleted;
 
     @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
     @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
+
+
 }

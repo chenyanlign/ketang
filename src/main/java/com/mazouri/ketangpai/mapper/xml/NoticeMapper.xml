@@ -2,4 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mazouri.ketangpai.mapper.NoticeMapper">
 
+    <select id="getAllNoticeByCourseId" resultType="com.mazouri.ketangpai.entity.vo.NoticeVO">
+        SELECT
+            n.*,
+            su.username
+        FROM
+            notice n
+                LEFT JOIN sys_user su ON su.id = n.user_id
+        WHERE
+            n.course_id = #{courseId}
+          AND n.is_deleted = 0
+    </select>
 </mapper>

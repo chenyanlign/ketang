@@ -12,6 +12,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         this.setFieldValByName("checked", 0, metaObject);
         this.setFieldValByName("likeNum", 0, metaObject);
+        this.setFieldValByName("readNum", 0, metaObject);
         this.setFieldValByName("archived", 0, metaObject);
         this.setFieldValByName("isTop", 0, metaObject);
         this.setFieldValByName("isEssence", 0, metaObject);

@@ -24,4 +24,16 @@
         WHERE
             course.id = #{courseId}
     </select>
+    <select id="getReadNoticeUser" resultType="com.mazouri.ketangpai.entity.SysUser">
+        SELECT
+            su.username,
+            su.avatar,
+            su.account
+        FROM
+            notice_user nu
+                LEFT JOIN sys_user su ON su.id = nu.user_id
+        WHERE
+            nu.notice_id = #{noticeId}
+          AND nu.is_deleted = 0
+    </select>
 </mapper>

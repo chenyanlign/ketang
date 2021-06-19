@@ -1,9 +1,11 @@
 package com.mazouri.ketangpai.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
-
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,35 +24,26 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="Notice对象", description="")
-public class Notice implements Serializable {
+@ApiModel(value="CommentNotice对象", description="")
+public class CommentNotice implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键id")
+    @ApiModelProperty(value = "主键")
     @TableId(value = "id", type = IdType.ID_WORKER_STR)
     private String id;
 
-    @ApiModelProperty(value = "标题")
-    private String title;
+    @ApiModelProperty(value = "公告id")
+    private String noticeId;
 
-    @ApiModelProperty(value = "内容")
-    private String content;
-
-    @ApiModelProperty(value = "是否置顶")
-    @TableField(fill = FieldFill.INSERT)
-    private Integer isTop;
-
-    @ApiModelProperty(value = "发布者id")
+    @ApiModelProperty(value = "用户id")
     private String userId;
 
+    @ApiModelProperty(value = "评论内容")
+    private String content;
 
-    @ApiModelProperty(value = "课程id")
-    private String courseId;
-
-    @ApiModelProperty(value = "0 正常 1 删除")
+    @ApiModelProperty(value = "是否已删除")
     @TableField(fill = FieldFill.INSERT)
-    @TableLogic
     private Integer isDeleted;
 
     @ApiModelProperty(value = "创建时间")
@@ -60,4 +53,6 @@ public class Notice implements Serializable {
     @ApiModelProperty(value = "更新时间")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
+
+
 }

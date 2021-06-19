@@ -18,4 +18,6 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     List<SysUser> getAllStudentByCourseId(String courseId);
 
     List<SysUser> getAllTeacherByCourseId(String courseId);
+
+    List<SysUser> getReadNoticeUser(String noticeId);
 }

@@ -2,6 +2,9 @@ package com.mazouri.ketangpai.mapper;
 
 import com.mazouri.ketangpai.entity.Notice;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.mazouri.ketangpai.entity.vo.NoticeVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface NoticeMapper extends BaseMapper<Notice> {
 
+    List<NoticeVO> getAllNoticeByCourseId(String courseId);
 }

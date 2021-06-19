@@ -72,5 +72,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return baseMapper.getAllTeacherByCourseId(courseId);
     }
 
+    @Override
+    public List<SysUser> getReadNoticeUser(String noticeId) {
+        return baseMapper.getReadNoticeUser(noticeId);
+    }
+
 
 }
