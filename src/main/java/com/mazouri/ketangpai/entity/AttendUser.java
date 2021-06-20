@@ -1,8 +1,9 @@
 package com.mazouri.ketangpai.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.util.Date;
-import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -42,13 +43,15 @@ public class AttendUser implements Serializable {
     @ApiModelProperty(value = "位置")
     private String position;
 
+    @TableField(fill = FieldFill.INSERT)
+    @TableLogic
     private String isDeleted;
 
     @ApiModelProperty(value = "创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
     @ApiModelProperty(value = "更新时间")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
-
-
 }

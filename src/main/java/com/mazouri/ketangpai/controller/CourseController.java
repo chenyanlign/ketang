@@ -83,12 +83,6 @@ public class CourseController {
         return R.ok().data("teacherList", teacherList);
     }
 
-    @ApiOperation(value = "获取所有归档课程")
-    @GetMapping("/getAllArchiveCourse/{userId}")
-    public R getAllArchiveCourse(@PathVariable String userId) {
-        return R.ok();
-    }
-
     @ApiOperation(value = "教师创建课程")
     @PostMapping("/createCourse")
     public R createCourse(@RequestBody Course course) {

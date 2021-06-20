@@ -2,4 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mazouri.ketangpai.mapper.AttendUserMapper">
 
+
+    <select id="getAllUserByCourseId" resultType="com.mazouri.ketangpai.entity.vo.AttendUserVO">
+        SELECT DISTINCT
+            su.username,
+            su.account,
+            su.id userId
+        FROM
+            course_user cu
+                LEFT JOIN sys_user su ON su.id = cu.user_id
+        WHERE
+            course_id = #{courseId}
+          AND cu.user_type = 3
+          AND cu.is_deleted = 0
+          AND su.is_deleted = 0
+    </select>
+
+
 </mapper>
