@@ -59,8 +59,6 @@ public class SysUserController {
     @ApiOperation(value = "注册")
     @PostMapping("/register/{type}")
     public R register(@RequestBody SysUser sysUser, @PathVariable String type) {
-
-
         List<String> accountList = userService.list().stream().map(SysUser::getAccount).collect(Collectors.toList());
 
         if (accountList.contains(sysUser.getAccount())) {

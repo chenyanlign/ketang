@@ -28,7 +28,8 @@
         SELECT
             su.username,
             su.avatar,
-            su.account
+            su.account,
+            nu.create_time
         FROM
             notice_user nu
                 LEFT JOIN sys_user su ON su.id = nu.user_id

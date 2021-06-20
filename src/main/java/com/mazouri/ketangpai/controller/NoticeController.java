@@ -71,6 +71,18 @@ public class NoticeController {
         return R.ok().data("noticeUsers", noticeUsers);
     }
 
+    @ApiOperation(value = "将读了通知的用户加到notice_user")
+    @PostMapping("/addReadNoticeUser")
+    public R addReadNoticeUser(@RequestBody NoticeUser noticeUser) {
+        NoticeUser user = noticeUserService.getOne(new QueryWrapper<NoticeUser>()
+                .eq("user_id", noticeUser.getUserId())
+                .eq("notice_id", noticeUser.getNoticeId()));
+        if (user == null){
+            noticeUserService.save(noticeUser);
+        }
+        return  R.ok();
+    }
+
     @ApiOperation(value = "根据通知id获取评论")
     @GetMapping("/getCommentByNoticeId/{noticeId}")
     public R getCommentByNoticeId(@PathVariable String noticeId) {
@@ -81,7 +93,7 @@ public class NoticeController {
     @ApiOperation(value = "删除评论")
     @PostMapping("/removeNoticeComment/{commentId}")
     public R removeNoticeComment(@PathVariable String commentId) {
-        return noticeService.removeById(commentId) ? R.ok() : R.error();
+        return commentNoticeService.removeById(commentId) ? R.ok() : R.error();
     }
 
     @ApiOperation(value = "添加评论")

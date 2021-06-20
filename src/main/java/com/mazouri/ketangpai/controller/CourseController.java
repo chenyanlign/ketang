@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -109,6 +110,21 @@ public class CourseController {
         return courseUserService.updateById(courseUser.setArchived(1)) ? R.ok() : R.error();
     }
 
+    @ApiOperation(value = "归档所有课程")
+    @PostMapping("/archiveAllCourse")
+    public R archiveAllCourse(@RequestParam String courseId) {
+        courseUserService.list(new QueryWrapper<CourseUser>().eq("course_id",courseId))
+                .forEach(courseUser -> courseUserService.updateById(courseUser.setArchived(1)));
+        return R.ok();
+    }
+
+
+    @ApiOperation(value = "老师编辑课程")
+    @PostMapping("/editCourse")
+    public R editCourse(@RequestBody Course course) {
+        return courseService.updateById(course) ? R.ok() : R.error();
+    }
+
     @ApiOperation(value = "恢复归档课程")
     @PostMapping("/recoverArchiveCourse")
     public R recoverArchiveCourse(@RequestParam String courseId, @RequestParam String userId) {
@@ -122,7 +138,6 @@ public class CourseController {
         CourseUser courseUser = courseUserService.getOne(new QueryWrapper<CourseUser>().eq("course_id", courseId).eq("user_id", userId));
         return courseUserService.removeById(courseUser.getId()) ? R.ok() : R.error();
     }
-
 
 
     @ApiOperation(value = "老师删除课程")
