@@ -51,6 +51,10 @@ public class Attend implements Serializable {
     @TableLogic
     private Integer isDeleted;
 
+    @ApiModelProperty(value = "是否结束")
+    @TableField(fill = FieldFill.INSERT)
+    private Integer isEnd;
+
     @ApiModelProperty(value = "创建时间")
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
@@ -58,9 +62,4 @@ public class Attend implements Serializable {
     @ApiModelProperty(value = "更新时间")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
-
-    @ApiModelProperty(value = "截止时间")
-    private Date endTime;
-
-
 }

@@ -2,6 +2,9 @@ package com.mazouri.ketangpai.mapper;
 
 import com.mazouri.ketangpai.entity.Attend;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.mazouri.ketangpai.entity.vo.AttendVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface AttendMapper extends BaseMapper<Attend> {
 
+    List<AttendVO> getAllAttendByCourseId(String courseId);
 }

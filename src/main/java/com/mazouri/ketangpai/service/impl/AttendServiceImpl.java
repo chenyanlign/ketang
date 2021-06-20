@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mazouri.ketangpai.entity.Attend;
 import com.mazouri.ketangpai.entity.AttendUser;
+import com.mazouri.ketangpai.entity.vo.AttendVO;
 import com.mazouri.ketangpai.mapper.AttendMapper;
 import com.mazouri.ketangpai.service.AttendService;
 import com.mazouri.ketangpai.service.AttendUserService;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * <p>
@@ -39,4 +41,21 @@ public class AttendServiceImpl extends ServiceImpl<AttendMapper, Attend> impleme
         });
         return attends;
     }
+
+    @Override
+    public List<AttendVO> getUserAllAttend(String userId, String courseId) {
+        List<AttendVO> attends = baseMapper.getAllAttendByCourseId(courseId);
+        attends.forEach(attend -> {
+            AttendUser att = attendUserService.getOne(new QueryWrapper<AttendUser>().eq("attend_id", attend.getId()).eq("user_id", userId));
+            if (att!=null){
+                attend.setUserId(att.getUserId()).setStatus("正常").setAttendTime(att.getCreateTime());
+            }else {
+                attend.setStatus("旷课");
+            }
+        });
+
+        return attends;
+    }
+
+
 }

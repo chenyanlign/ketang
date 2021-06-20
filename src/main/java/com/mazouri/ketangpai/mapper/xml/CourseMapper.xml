@@ -26,7 +26,7 @@
             su.avatar AS teacherAvatar
         FROM
             course
-                LEFT JOIN course_user cu ON cu.course_id = course.id
+                LEFT JOIN course_user cu ON cu.course_id = course.id AND cu.archived = 0
                 LEFT JOIN sys_user su ON su.id = course.create_teacher_id
         WHERE
             course.id = #{courseId} AND course.is_deleted = 0 AND cu.is_deleted = 0

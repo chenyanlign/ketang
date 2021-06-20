@@ -2,6 +2,7 @@ package com.mazouri.ketangpai.service;
 
 import com.mazouri.ketangpai.entity.Attend;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mazouri.ketangpai.entity.vo.AttendVO;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ import java.util.List;
 public interface AttendService extends IService<Attend> {
 
     List<Attend> getAllAttendByCourseId(String courseId);
+
+    List<AttendVO> getUserAllAttend(String userId, String courseId);
 }

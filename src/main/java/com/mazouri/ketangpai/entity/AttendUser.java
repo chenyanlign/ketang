@@ -7,6 +7,7 @@ import java.util.Date;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.models.auth.In;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -45,7 +46,7 @@ public class AttendUser implements Serializable {
 
     @TableField(fill = FieldFill.INSERT)
     @TableLogic
-    private String isDeleted;
+    private Integer isDeleted;
 
     @ApiModelProperty(value = "创建时间")
     @TableField(fill = FieldFill.INSERT)

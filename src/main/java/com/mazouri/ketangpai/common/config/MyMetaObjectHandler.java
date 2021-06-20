@@ -11,6 +11,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         this.setFieldValByName("checked", 0, metaObject);
+        this.setFieldValByName("isEnd", 0, metaObject);
         this.setFieldValByName("likeNum", 0, metaObject);
         this.setFieldValByName("readNum", 0, metaObject);
         this.setFieldValByName("archived", 0, metaObject);
