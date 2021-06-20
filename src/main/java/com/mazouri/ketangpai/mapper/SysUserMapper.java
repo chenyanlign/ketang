@@ -2,6 +2,7 @@ package com.mazouri.ketangpai.mapper;
 
 import com.mazouri.ketangpai.entity.SysUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     List<SysUser> getAllTeacherByCourseId(String courseId);
 
     List<SysUser> getReadNoticeUser(String noticeId);
+
+    List<SysUser> getStudentsCondition(@Param("username") String username,@Param("account")  String account,@Param("courseId")  String courseId);
 }

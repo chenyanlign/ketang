@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
@@ -118,11 +119,25 @@ public class CourseController {
         return R.ok();
     }
 
-
     @ApiOperation(value = "老师编辑课程")
     @PostMapping("/editCourse")
     public R editCourse(@RequestBody Course course) {
         return courseService.updateById(course) ? R.ok() : R.error();
+    }
+
+    @ApiOperation(value = "老师删除课程中的学生")
+    @PostMapping("/removeStudents/{courseId}")
+    public R removeStudents(@RequestBody String[] ids,@PathVariable String courseId) {
+        Arrays.asList(ids).forEach(userId -> courseUserService.remove(new QueryWrapper<CourseUser>()
+                .eq("course_id",courseId).eq("user_id",userId)));
+        return R.ok();
+    }
+
+    @ApiOperation(value = "老师根据条件查找学生")
+    @PostMapping("/findStudent")
+    public R findStudent(@RequestParam String username,@RequestParam String account,@RequestParam String courseId) {
+        List<SysUser> userList =  userService.getStudentsCondition(username,account,courseId);
+        return R.ok().data("studentList",userList);
     }
 
     @ApiOperation(value = "恢复归档课程")

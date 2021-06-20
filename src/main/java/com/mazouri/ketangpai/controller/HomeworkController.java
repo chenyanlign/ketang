@@ -122,29 +122,5 @@ public class HomeworkController {
         submitHomeworkService.updateById(new SubmitHomework().setId(submitHomeworkId).setGrade("被打回"));
         return R.ok();
     }
-
-    @ApiOperation(value = "批阅作业")
-    @GetMapping("/readHomework/{submitHomeworkId}")
-    public R readHomework(@PathVariable String submitHomeworkId) {
-        return R.ok();
-    }
-
-    @ApiOperation(value = "获取没有批阅的作业")
-    @GetMapping("/getNoChecked")
-    public R getNoChecked() {
-        return R.ok();
-    }
-
-    @ApiOperation(value = "获取批阅的作业")
-    @GetMapping("/getChecked")
-    public R getChecked() {
-        return R.ok();
-    }
-
-    @ApiOperation(value = "获取批阅的作业")
-    @GetMapping("/getNeedSubmitStudents")
-    public R getNeedSubmitStudents() {
-        return R.ok();
-    }
 }
 

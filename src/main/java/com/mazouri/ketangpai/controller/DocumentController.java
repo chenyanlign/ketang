@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mazouri.ketangpai.common.result.R;
 import com.mazouri.ketangpai.common.utils.UUIDUtils;
 import com.mazouri.ketangpai.entity.Document;
-import com.mazouri.ketangpai.entity.SubmitHomework;
 import com.mazouri.ketangpai.service.DocumentService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

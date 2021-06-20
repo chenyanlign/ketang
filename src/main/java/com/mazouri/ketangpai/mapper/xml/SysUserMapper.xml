@@ -3,38 +3,56 @@
 <mapper namespace="com.mazouri.ketangpai.mapper.SysUserMapper">
 
     <select id="getAllStudentByCourseId" resultType="com.mazouri.ketangpai.entity.SysUser">
-        SELECT
-            su.*
-        FROM
-            course
-                LEFT JOIN course_user cu ON cu.course_id = course.id
-                AND cu.user_type = 3
-                LEFT JOIN sys_user su ON su.id = cu.user_id
-        WHERE
-            course.id = #{courseId}
+        SELECT su.*
+        FROM course
+                 LEFT JOIN course_user cu ON cu.course_id = course.id
+            AND cu.user_type = 3
+                 LEFT JOIN sys_user su ON su.id = cu.user_id
+        WHERE course.id = #{courseId}
+          AND course.is_deleted = 0
+          AND su.is_deleted = 0
+          AND cu.is_deleted = 0
     </select>
     <select id="getAllTeacherByCourseId" resultType="com.mazouri.ketangpai.entity.SysUser">
-        SELECT
-            su.*
-        FROM
-            course
-                LEFT JOIN course_user cu ON cu.course_id = course.id
-                AND ( cu.user_type = 1 OR cu.user_type = 2 )
-                LEFT JOIN sys_user su ON su.id = cu.user_id
-        WHERE
-            course.id = #{courseId}
+        SELECT su.*
+        FROM course
+                 LEFT JOIN course_user cu ON cu.course_id = course.id
+            AND (cu.user_type = 1 OR cu.user_type = 2)
+                 LEFT JOIN sys_user su ON su.id = cu.user_id
+        WHERE course.id = #{courseId}
+          AND course.is_deleted = 0
+          AND su.is_deleted = 0
+          AND cu.is_deleted = 0
     </select>
     <select id="getReadNoticeUser" resultType="com.mazouri.ketangpai.entity.SysUser">
-        SELECT
-            su.username,
-            su.avatar,
-            su.account,
-            nu.create_time
-        FROM
-            notice_user nu
-                LEFT JOIN sys_user su ON su.id = nu.user_id
-        WHERE
-            nu.notice_id = #{noticeId}
+        SELECT su.username,
+               su.avatar,
+               su.account,
+               nu.create_time
+        FROM notice_user nu
+                 LEFT JOIN sys_user su ON su.id = nu.user_id
+        WHERE nu.notice_id = #{noticeId}
           AND nu.is_deleted = 0
+          AND su.is_deleted = 0
+    </select>
+    <select id="getStudentsCondition" resultType="com.mazouri.ketangpai.entity.SysUser">
+        SELECT
+        su.*
+        FROM
+        course
+        LEFT JOIN course_user cu ON cu.course_id = course.id AND cu.user_type = 3
+        LEFT JOIN sys_user su ON su.id = cu.user_id
+        WHERE
+        course.id = #{courseId}
+        AND course.is_deleted = 0
+        AND su.is_deleted = 0
+        AND cu.is_deleted = 0
+        <if test='username!=null and username!="" '>
+            AND su.username like CONCAT('%',#{username},'%')
+        </if>
+        <if test='account!=null and account!="" '>
+            AND su.account like CONCAT('%',#{account},'%')
+        </if>
+
     </select>
 </mapper>
