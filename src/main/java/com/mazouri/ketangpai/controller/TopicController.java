@@ -26,8 +26,8 @@ public class TopicController {
     private TopicService topicService;
 
     @ApiOperation(value = "获取某课程下的所有的话题")
-    @GetMapping("/getAllTopicByCourseId/{courseId}")
-    public R getAllTopicByCourseId(@PathVariable String courseId) {
+    @GetMapping("/getAllTopicByCourseId")
+    public R getAllTopicByCourseId(@RequestParam String courseId) {
         List<TopicVO> topics = topicService.getTopicList(courseId);
         return R.ok().data("topics", topics);
     }

@@ -30,14 +30,11 @@ public class TopicServiceImpl extends ServiceImpl<TopicMapper, Topic> implements
     @Autowired
     private CommentService commentService;
 
-    @Autowired
-    private SysUserService userService;
-
     @Override
     public List<TopicVO> getTopicList(String courseId) {
         List<TopicVO> topicList = baseMapper.getAllTopic(courseId);
         topicList.forEach(topicVO -> topicVO.setCommentNum(commentService.count(new QueryWrapper<Comment>()
-                .eq("topic_id", courseId))));
+                .eq("topic_id", topicVO.getId()))));
         return topicList;
     }
 

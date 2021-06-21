@@ -17,4 +17,15 @@
           AND cu.user_type = 3
 
     </select>
+    <select id="getAllHomeworkById" resultType="com.mazouri.ketangpai.entity.vo.SubmitHomeworkVO">
+        SELECT
+            h.*
+        FROM
+            course c
+                LEFT JOIN homework h ON h.course_id = c.id
+        WHERE
+            c.id = #{courseId}
+          AND c.is_deleted = 0
+          AND h.is_deleted = 0
+    </select>
 </mapper>

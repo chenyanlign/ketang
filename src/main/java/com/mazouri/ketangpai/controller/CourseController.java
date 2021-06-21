@@ -88,7 +88,8 @@ public class CourseController {
     public R createCourse(@RequestBody Course course) {
         List<String> codes = courseService.list().stream().map(Course::getCode).collect(Collectors.toList());
         //设置选课码 唯一
-        course.setCode(GenerateCourseCode.getCode(codes));
+        course.setCode(GenerateCourseCode.getCode(codes))
+                .setBackground("https://assets.ketangpai.com/theme/teacher/min/42.png");
         CourseUser courseUser = new CourseUser();
         if (courseService.save(course)) {
             String insertedCourseId = courseService.getOne(new QueryWrapper<Course>().eq("code", course.getCode())).getId();

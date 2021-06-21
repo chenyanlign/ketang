@@ -1,19 +1,23 @@
 package com.mazouri.ketangpai.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.mazouri.ketangpai.entity.Course;
 import com.mazouri.ketangpai.entity.Homework;
 import com.mazouri.ketangpai.entity.SubmitHomework;
+import com.mazouri.ketangpai.entity.SysUser;
 import com.mazouri.ketangpai.entity.vo.HomeworkVO;
+import com.mazouri.ketangpai.entity.vo.SubmitHomeworkVO;
 import com.mazouri.ketangpai.mapper.HomeworkMapper;
-import com.mazouri.ketangpai.service.CourseUserService;
-import com.mazouri.ketangpai.service.HomeworkService;
+import com.mazouri.ketangpai.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.mazouri.ketangpai.service.SubmitHomeworkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -30,6 +34,12 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
 
     @Autowired
     private CourseUserService courseUserService;
+
+    @Autowired
+    private SysUserService sysUserService;
+
+    @Autowired
+    private HomeworkService homeworkService;
 
 
 
@@ -60,13 +70,34 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
 
     @Override
     public List<Homework> getHomeworkListByCourseId(String courseId) {
-        //        List<Homework> homeworkList = homeworkService.list(new QueryWrapper<Homework>().eq("course_id", courseId));
-
-
         List<Homework> homeworkList = baseMapper.selectList(new QueryWrapper<Homework>().eq("course_id", courseId));
         homeworkList.forEach(homework -> refreshNum(courseId, homework.getId()));
-
         return baseMapper.selectList(new QueryWrapper<Homework>().eq("course_id", courseId));
+    }
+
+    @Override
+    public List<SubmitHomeworkVO> getAllHomeworkById(String courseId, String userId) {
+        List<SubmitHomeworkVO> submitHomeworkList =   baseMapper.getAllHomeworkById(courseId);
+        Integer total = homeworkService.count(new QueryWrapper<Homework>().eq("course_id",courseId));
+        SysUser user = sysUserService.getById(userId);
+        submitHomeworkList.forEach(submitHomework -> {
+            SubmitHomework hw = submitHomeworkService.getOne(new QueryWrapper<SubmitHomework>().eq("homework_id", submitHomework.getId()).eq("user_id", userId));
+            if (hw!=null){
+                submitHomework.setTotal(total).setGrade(hw.getGrade()).setFilePath(hw.getFilePath())
+                        .setUsername(user.getUsername()).setAccount(user.getAccount()).setCreateTime(hw.getCreateTime());
+
+            }else {
+                submitHomework.setTotal(total).setGrade("未交").setUsername(user.getUsername()).setAccount(user.getAccount());
+            }
+
+        });
+
+        Integer noSubmitCount = (int) submitHomeworkList.stream().filter(submitHomework -> "未交".equals(submitHomework.getGrade())).count();
+        Integer noCheckCount = (int) submitHomeworkList.stream().filter(submitHomework -> "未批".equals(submitHomework.getGrade())).count();
+        Integer checkNum = total - noCheckCount-noSubmitCount;
+        submitHomeworkList.forEach(sh -> sh.setTotal(total).setCheckNum(checkNum).setNoCheckNum(noCheckCount).setNoSubmitNum(noSubmitCount));
+
+        return submitHomeworkList;
     }
 
     public void refreshNum(String courseId, String homeworkId) {

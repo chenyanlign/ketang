@@ -8,6 +8,7 @@ import com.mazouri.ketangpai.entity.Course;
 import com.mazouri.ketangpai.entity.Homework;
 import com.mazouri.ketangpai.entity.SubmitHomework;
 import com.mazouri.ketangpai.entity.vo.HomeworkVO;
+import com.mazouri.ketangpai.entity.vo.SubmitHomeworkVO;
 import com.mazouri.ketangpai.service.CourseService;
 import com.mazouri.ketangpai.service.CourseUserService;
 import com.mazouri.ketangpai.service.HomeworkService;
@@ -121,6 +122,14 @@ public class HomeworkController {
     public R backHomework(@PathVariable String submitHomeworkId) {
         submitHomeworkService.updateById(new SubmitHomework().setId(submitHomeworkId).setGrade("被打回"));
         return R.ok();
+    }
+
+
+    @ApiOperation(value = "根据course_id和user_id获取所有学生的作业")
+    @GetMapping("/getAllHomeworkById")
+    public R getAllHomeworkById(@RequestParam String courseId,@RequestParam String userId) {
+       List<SubmitHomeworkVO> submitHomeworks =  homeworkService.getAllHomeworkById(courseId,userId);
+        return R.ok().data("submitWorks",submitHomeworks);
     }
 }
 

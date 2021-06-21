@@ -50,12 +50,6 @@ public class SysUserController {
         return R.ok().data(userInfo);
     }
 
-    @ApiOperation(value = " 退出登录")
-    @GetMapping("/logout")
-    public R logout() {
-        return R.ok();
-    }
-
     @ApiOperation(value = "注册")
     @PostMapping("/register/{type}")
     public R register(@RequestBody SysUser sysUser, @PathVariable String type) {

@@ -60,7 +60,7 @@ public class DocumentController {
     @PostMapping("/uploadFile/{documentId}")
     public R uploadFile(@RequestParam("file") MultipartFile multipartFile, @PathVariable String documentId, HttpServletRequest req) {
         String format = sdf.format(new Date());
-        String realPath = req.getServletContext().getRealPath("/") + "/document" + format;
+        String realPath = req.getServletContext().getRealPath("/") + "/document/store" + format;
         System.out.println(realPath);
         File fileDir = new File(realPath);
         if (!fileDir.exists()) {
@@ -71,7 +71,7 @@ public class DocumentController {
             String[] strings = multipartFile.getOriginalFilename().split("\\.");
             String fileType = strings[strings.length - 1];
             String fileName = UUIDUtils.getUUID() + multipartFile.getOriginalFilename();
-            String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/document" + format + fileName;
+            String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/document/store" + format + fileName;
             try {
                 multipartFile.transferTo(new File(fileDir, fileName));
             } catch (IOException e) {
