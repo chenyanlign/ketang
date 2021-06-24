@@ -53,6 +53,9 @@ public class CourseController {
     @PostMapping("/joinCourse")
     public R joinCourse(@RequestParam String code, @RequestParam String userId) {
         Course course = courseService.getOne(new QueryWrapper<Course>().eq("code", code));
+        if (course == null) {
+            return R.error().message("找不到该课程，请确定加课码是否正确！！！");
+        }
         CourseUser courseUser = new CourseUser();
         courseUser.setUserType(3).setCourseId(course.getId()).setUserId(userId);
 
@@ -142,8 +145,8 @@ public class CourseController {
         return courseUserService.updateById(courseUser.setArchived(0)) ? R.ok() : R.error();
     }
 
-    @ApiOperation(value = "退课")
-    @PostMapping("/delete")
+    @ApiOperation(value = "学生退课")
+    @PostMapping("/deleteStu")
     public R deleteCourse(@RequestParam String courseId, @RequestParam String userId) {
         CourseUser courseUser = courseUserService.getOne(new QueryWrapper<CourseUser>().eq("course_id", courseId).eq("user_id", userId));
         return courseUserService.removeById(courseUser.getId()) ? R.ok() : R.error();

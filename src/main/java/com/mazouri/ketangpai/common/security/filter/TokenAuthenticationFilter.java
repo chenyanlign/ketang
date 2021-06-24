@@ -59,13 +59,13 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
         try {
             authentication = getAuthentication(req);
         } catch (Exception e) {
-            ResponseUtil.out(res, R.error());
+            ResponseUtil.out(res, R.error().code(408).message("token过期"));
         }
 
         if (authentication != null) {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } else {
-            ResponseUtil.out(res, R.error());
+            ResponseUtil.out(res, R.error().code(408).message("token过期"));
         }
         chain.doFilter(req, res);
     }
@@ -73,6 +73,10 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         // token置于header里
         String token = request.getHeader("token");
+       if (!redisTemplate.hasKey("token:"+token)){
+           return null;
+       }
+
         if (token != null && !"".equals(token.trim())) {
             String email = JwtUtils.getEmailByJwtToken(token);
 

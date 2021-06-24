@@ -36,8 +36,8 @@ public class UploadController {
     @RequestMapping("/upload/{id}")
     public R uploadFile(@RequestParam("file") MultipartFile multipartFile, @PathVariable String id, HttpServletRequest req) throws IOException {
         String format = sdf.format(new Date());
+       // getRealPath("/")方法返回的是项目在服务器的绝对路径 DocumentRoot.java
         String realPath = req.getServletContext().getRealPath("/")+"/store"+format;
-        System.out.println(realPath);
         File fileDir = new File(realPath);
         if (!fileDir.exists()) {
             fileDir.mkdirs();
